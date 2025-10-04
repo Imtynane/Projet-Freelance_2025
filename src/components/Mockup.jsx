@@ -19,7 +19,7 @@ function Mockup() {
 
           {/* Image */}
           <img
-            src="/fallback/09481772-8201-452d-a03b-0c454d65d14b.jpg"
+            src="/fallback/undraw_online-meetings_zutp.png"
             alt="Aperçu de l'application StudyMate"
             className="w-full h-full object-cover"
           />
