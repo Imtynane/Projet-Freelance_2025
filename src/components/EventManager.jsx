@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import EventModal from "./EventModal";
 
 function EventManager() {
   const [events, setEvents] = useState([]);
@@ -81,6 +82,9 @@ function EventManager() {
       notes: event.notes || "",
     });
   };
+
+  // 🔽 NOUVEAU : Charger les événements au montage
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="p-6 bg-white rounded-xl shadow-md max-w-2xl mx-auto mt-8 relative">
@@ -213,6 +217,18 @@ function EventManager() {
           </div>
         </div>
       )}
+      <div>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg"
+        >
+          ➕ Ajouter un événement
+        </button>
+        <EventModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <h3 className="text-lg font-bold mb-3">Ajouter un nouvel événement</h3>
+          {/* Le formulaire d'ajout peut être réutilisé ici */}
+        </EventModal>
+      </div>
     </div>
   );
 }

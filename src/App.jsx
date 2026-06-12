@@ -1,34 +1,65 @@
-import Features from "./components/Features";
-import Herosection from "./components/HeroSection";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Testimonials from "./components/Testimonials";
-import Mockup from "./components/Mockup";
-import CTA from "./components/CTA";
-import Schedule from "./components/Schedule";
-import UserManager from "./components/UserManager";
+
+import Login from "./pages/Login";
+import LandingPage from "./pages/LandingPage";
+import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 import SessionManager from "./components/SessionManager";
-import EventManager from "./components/EventManager";
+
+import PrivateRoute from "./components/PrivateRoute";
+import DashboardLayout from "./layouts/DashboardLayout";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
-  return(
-    <>
-      <Navbar brandName="StudyMate"/>
-      {/* wrapper central : limite la largeur et centre le contenu */}
-      <main>
-        <Herosection />
-        <EventManager />
-        <Schedule />
-        <UserManager />
-        <SessionManager />
-        <Features />
-        <Mockup />
-        <Testimonials />
-        <CTA />
-      </main>
-      <Footer />
-    </>
-  )
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+
+          {/* 🌍 Pages publiques */}
+          <Route
+            path="/"
+            element={
+              <>
+                <Navbar brandName="StudyMate" />
+                <LandingPage />
+                <Footer />
+              </>
+            }
+          />
+
+          <Route
+            path="/login"
+            element={
+              <>
+                <Navbar brandName="StudyMate" />
+                <Login />
+                <Footer />
+              </>
+            }
+          />
+
+          {/* 🔒 Dashboard */}
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <DashboardLayout />
+              </PrivateRoute>
+            }
+          >
+            <Route index element={<Dashboard />} />
+            <Route path="sessions" element={<SessionManager />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
+
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;

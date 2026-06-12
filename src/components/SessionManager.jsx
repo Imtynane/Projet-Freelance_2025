@@ -1,38 +1,55 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../services/api";
+import { motion, AnimatePresence } from "framer-motion";
+import toast from "react-hot-toast";
 
 function SessionManager() {
   const [sessions, setSessions] = useState([]);
-  const [newSession, setNewSession] = useState({ title: "", duration: "", userId: "" });
+  const [newSession, setNewSession] = useState({ title: "", duration: "" });
 
   // Récupérer les sessions au chargement
   useEffect(() => {
-    axios.get("http://localhost:3000/sessions")
+    api.get("/sessions")
       .then(res => setSessions(res.data))
       .catch(err => console.error(err));
   }, []);
 
   // Ajouter une session
   const handleAddSession = async (e) => {
-  e.preventDefault();
-  try {
-    const payload = {
-      title: newSession.title,
-      duration: Number(newSession.duration), // ✅ conversion en nombre
-      userId: Number(newSession.userId)      // ✅ conversion en nombre
-    };
+    e.preventDefault();
+    try {
+      const payload = {
+        title: newSession.title,
+        duration: Number(newSession.duration),
+      };
 
-    const res = await axios.post("http://localhost:3000/sessions", payload);
-    setSessions([...sessions, res.data]); 
-    setNewSession({ title: "", duration: "", userId: "" }); // reset
-  } catch (err) {
-    console.error(err);
-  }
-};
+      const res = await api.post("/sessions", payload);
+      setSessions([...sessions, res.data]);
+      setNewSession({ title: "", duration: "" });
+    } catch (err) {
+      console.error("Erreur lors de l'ajout de la session :", err);
+      toast.error("Échec de l'ajout de la session ❌");
+    }
+  };
+
+  // Supprimer une session
+  const handleDeleteSession = async (id) => {
+    try {
+      await api.delete(`/sessions/${id}`);
+      setSessions((prev) => prev.filter((s) => s.id !== id));
+    } catch (err) {
+      console.error("Erreur lors de la suppression de la session :", err);
+      toast.error("Échec de la suppression de la session ❌");
+    }
+  };
 
 
   return (
-    <div className="p-6 bg-white rounded-xl shadow-md max-w-lg mx-auto mt-8">
+    <motion.div className="p-6 bg-white rounded-xl shadow-md max-w-lg mx-auto mt-8"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <h2 className="text-xl font-bold mb-4 text-gray-800">Test API : Gestion Sessions</h2>
 
       {/* Formulaire d'ajout */}
@@ -53,33 +70,46 @@ function SessionManager() {
           className="border border-gray-300 rounded px-3 py-2 focus:ring focus:ring-blue-300"
           required
         />
-        <input
-          type="number"
-          placeholder="ID utilisateur"
-          value={newSession.userId}
-          onChange={(e) => setNewSession({ ...newSession, userId: e.target.value })}
-          className="border border-gray-300 rounded px-3 py-2 focus:ring focus:ring-blue-300"
-          required
-        />
 
-        <button
+        <motion.button
           type="submit"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded flex items-center justify-center gap-2"
         >
           🎯 Ajouter Session
-        </button>
+        </motion.button>
       </form>
 
-      {/* Liste des sessions */}
+      {/* Liste des sessions animées*/}
       <ul className="list-disc pl-6 text-gray-700">
-        {sessions.map((s) => (
-          <li key={s.id}>
-            <span className="font-medium">{s.title}</span> — {s.duration} min  
-            <span className="text-sm text-gray-500"> (User ID: {s.userId})</span>
-          </li>
+        <AnimatePresence>
+          {sessions.map((s) => (
+          <motion.li 
+            key={s.id}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 10 }}
+            transition={{ duration: 0.3 }}
+            className="border-b border-gray-200 py-2"
+          >
+            <div>
+              <span className="font-medium">{s.title}</span> — {s.duration} min
+            </div>
+            <motion.button
+              onClick={() => handleDeleteSession(s.id)}
+              whileHover={{ scale: 1.1 , color: "#e53e3e"  }}
+              whileTap={{ scale: 0.9 }}
+              className="text-red-500 text-lg font-bold"
+              title="Supprimer"
+            >
+              🗑️
+            </motion.button>
+          </motion.li>
         ))}
+        </AnimatePresence>
       </ul>
-    </div>
+    </motion.div>
   );
 }
 

@@ -4,31 +4,37 @@ const prisma = new PrismaClient();
 
 // 🧩 Récupérer toutes les sessions
 exports.getAllSessions = async (req, res) => {
+  console.log("USER AUTH:", req.user);
+
   try {
     const sessions = await prisma.session.findMany({
-      include: { user: true }, // Inclut les infos de l’utilisateur lié
+      where: {
+        userId: req.user.userId, // ✅ CORRECTION ICI
+      },
+      orderBy: { createdAt: "desc" },
     });
+
     res.json(sessions);
-  } catch (error) {
-    console.error("Erreur getAllSessions:", error);
-    res.status(500).json({ error: "Erreur lors de la récupération des sessions" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur récupération sessions" });
   }
 };
+
 
 // ➕ Créer une session
 exports.createSession = async (req, res) => {
   try {
-    const { title, duration, userId } = req.body;
-    const newSession = await prisma.session.create({
+    const { title, duration } = req.body;
+    const session = await prisma.session.create({
       data: {
         title,
         duration: Number(duration),
-        userId: Number(userId),
+        userId: req.user.userId,
       },
     });
-    res.json(newSession);
+    res.json(session);
   } catch (error) {
-    console.error("Erreur createSession:", error);
     res.status(500).json({ error: "Erreur lors de la création de la session" });
   }
 };
@@ -58,3 +64,4 @@ exports.deleteSession = async (req, res) => {
     res.status(500).json({ error: "Erreur lors de la suppression" });
   }
 };
+

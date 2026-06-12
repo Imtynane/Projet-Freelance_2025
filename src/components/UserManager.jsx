@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getUsers, createUser } from "../services/api";
+import toast from "react-hot-toast";
 
 function UserManager() {
   const [users, setUsers] = useState([]);
@@ -16,6 +17,7 @@ function UserManager() {
       setUsers(data);
     } catch (err) {
       console.error("Erreur lors du chargement des utilisateurs :", err);
+      toast.error("Impossible de charger les utilisateurs 😔");
     }
   }
 
@@ -26,8 +28,13 @@ function UserManager() {
       const user = await createUser(newUser);
       setUsers([...users, user]); // ajoute à la liste sans recharger toute la BDD
       setNewUser({ name: "", email: "" }); // reset formulaire
+
+      // Afficher un toast de succès
+      toast.success("Utilisateur ajouté avec succès ! 🎉");
     } catch (err) {
       console.error("Erreur lors de l'ajout de l'utilisateur :", err);
+      // Afficher un toast d'erreur
+      toast.error("Échec de l'ajout de l'utilisateur ❌");
     }
   }
 

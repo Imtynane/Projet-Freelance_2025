@@ -1,34 +1,27 @@
-// frontend/src/services/api.js
-const API_URL = "http://localhost:3000";
+import axios from 'axios';
+import { getToken } from './authService.js';
 
-// Récupérer tous les utilisateurs
-export async function getUsers() {
-    const res = await fetch(`${API_URL}/users`);
-    return res.json();
-}
+const api = axios.create({
+    baseURL: "http://localhost:3000", // backend base URL
+});
 
-// Créer un nouvel utilisateur
-export async function createUser(user) {
-    const res = await fetch(`${API_URL}/users`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user),
-    });
-    return res.json();
-}
+// Ajouter un intercepteur pour inclure le token d'authentification dans les requêtes
+api.interceptors.request.use((config) => {
+    const token = getToken();
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
 
-//Récupérer toutes les sessions
-export async function getSessions() {
-    const res = await fetch(`${API_URL}/sessions`);
-    return res.json();
-}
+export const getUsers = async () => {
+    const res = await api.get("/users");
+    return res.data;
+};
 
-// Créer une nouvelle session
-export async function createSession(session) {
-    const res = await fetch(`${API_URL}/sessions`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(session),
-    });
-    return res.json();
-}
+export const createUser = async (user) => {
+    const res = await api.post("/users", user);
+    return res.data;
+};
+
+export default api;
