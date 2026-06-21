@@ -1,4 +1,4 @@
-import { motion } from "framer-motion"
+﻿import { motion } from "framer-motion"
 import ImageWithFallback from "../ImageWithFallback"
 
 function Herosection() {
@@ -45,7 +45,7 @@ function Herosection() {
       >
         <ImageWithFallback
           src="/fallback/desola-lanre-ologun-kwzWjTnDPLk-unsplash.jpg"
-          alt="Etudiants utilisant studyMate"
+          alt="Etudiants utilisant ITMIA"
           className="w-full max-w-sm md:max-w-md lg:max-w-lg h-auto object-contain"
         />
       </motion.div>

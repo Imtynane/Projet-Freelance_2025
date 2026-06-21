@@ -1,4 +1,4 @@
-import { Swiper, SwiperSlide } from "swiper/react"
+﻿import { Swiper, SwiperSlide } from "swiper/react"
 import { Autoplay, Pagination } from "swiper/modules"
 import "swiper/css"
 import "swiper/css/pagination"
@@ -7,12 +7,12 @@ function Testimonials() {
   const testimonials = [
     {
       img: "https://randomuser.me/api/portraits/women/44.jpg",
-      text: "Grâce à StudyMate, je suis beaucoup plus organisée.",
+      text: "Grâce à ITMIA, je suis beaucoup plus organisée.",
       name: "Sarah L.",
     },
     {
       img: "https://randomuser.me/api/portraits/men/32.jpg",
-      text: "Mes dépenses sont mieux gérées grâce à StudyMate.",
+      text: "Mes dépenses sont mieux gérées grâce à ITMIA.",
       name: "Jackson Lee",
     },
     {
@@ -58,3 +58,4 @@ function Testimonials() {
 }
 
 export default Testimonials
+

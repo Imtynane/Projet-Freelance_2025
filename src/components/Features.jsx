@@ -1,4 +1,4 @@
-import { motion } from "framer-motion"
+﻿import { motion } from "framer-motion"
 
 
 function Features() {
@@ -19,7 +19,7 @@ function Features() {
                     transition={{ duration: 0.6 }} // Durée de l'animation
                     viewport={{ once: true }}
                 >
-                    Pourquoi choisir StudyMate ?
+                    Pourquoi choisir ITMIA ?
                 </motion.h2>
 
                 <motion.p 
@@ -107,3 +107,4 @@ function Features() {
 }
 
 export default Features
+

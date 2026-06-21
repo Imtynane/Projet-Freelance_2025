@@ -1,4 +1,4 @@
-import { motion } from "framer-motion"
+﻿import { motion } from "framer-motion"
 
 function CTA() {
   return (
@@ -18,7 +18,7 @@ function CTA() {
         whileInView={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
       >
-        Rejoins StudyMate et passe à un niveau supérieur 🚀
+        Rejoins ITMIA et passe à un niveau supérieur 🚀
       </motion.p>
 
       <motion.button

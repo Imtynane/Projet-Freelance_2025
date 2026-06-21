@@ -19,13 +19,21 @@ model User {
   name   String
   email  String    @unique
   password String
+  // --Profil cognitif MNEMO--
+  chronotype String?  // "matin" | "soir" | "flexible"
+  niveau     String? // "college" | "lycee" | "license" | "master 1 ou 2" | "doctorat"
+  objectif   String?// "notes" | "organisation" | "memoire" | "equilibre"
+  chargeMax  Int?   // capacité de charge max en minutes (30-180)
+  fiches     Fiche[]
   sessions Session[]
+  concepts Concept[]
 }
 
 model Session {
   id         Int    @id @default(autoincrement())
   title      String
   duration   Int
+  subject    String?
   createdAt  DateTime @default(now())
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     Int
@@ -40,4 +48,30 @@ model Event {
   duration  Int
   notes     String?
   createdAt DateTime @default(now())
+}
+
+model Concept {
+  id           Int      @id @default(autoincrement())
+  title        String
+  subject      String
+  easinessFactor Float  @default(2.5)
+  interval     Int      @default(1)
+  repetitions  Int      @default(0)
+  nextReview   DateTime @default(now())
+  lastReview   DateTime?
+  createdAt    DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int
+}
+
+model Fiche {
+  id        Int     @id @default(autoincrement())
+  title     String
+  subject   String
+  type      String    // "cours" ou "exercice"
+  content   String   // contenu texte de la fiche (cours ou énoncé d'exercice)
+  createdAt DateTime @default(now())
+
+  userId    Int
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

@@ -25,11 +25,12 @@ exports.getAllSessions = async (req, res) => {
 // ➕ Créer une session
 exports.createSession = async (req, res) => {
   try {
-    const { title, duration } = req.body;
+    const { title, duration, subject } = req.body;
     const session = await prisma.session.create({
       data: {
         title,
         duration: Number(duration),
+        subject: subject || null,
         userId: req.user.userId,
       },
     });

@@ -1,9 +1,9 @@
-function Mockup() {
+﻿function Mockup() {
   return (
     <section className="py-20 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 text-center relative overflow-hidden">
       {/* Titre */}
       <h2 className="text-3xl font-bold text-gray-900">
-        Un aperçu de StudyMate 📱
+        Un aperçu de ITMIA 📱
       </h2>
       <p className="mt-4 text-gray-600">
         Découvre ton futur compagnon d’organisation.
@@ -20,7 +20,7 @@ function Mockup() {
           {/* Image */}
           <img
             src="/fallback/Capture d'écran 2025-10-08 182923.png"
-            alt="Aperçu de l'application StudyMate"
+            alt="Aperçu de l'application ITMIA"
             className="w-full h-full object-cover"
           />
         </div>
@@ -30,3 +30,4 @@ function Mockup() {
 }
 
 export default Mockup
+
